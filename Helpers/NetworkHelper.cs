@@ -14,13 +14,13 @@ namespace SharpImgur.Helpers
         private static string baseURI = "https://imgur-apiv3.p.mashape.com/3/";
         private static JObject configuration;
 
-        public static async Task<string> ExecuteRequest(string relativeUri)
+        public static async Task<JObject> ExecuteRequest(string relativeUri)
         {
             HttpClient httpClient = await GetClient();
             string uri = baseURI + relativeUri;
             string response = await httpClient.GetStringAsync(new Uri(uri));
             JObject responseJson = JObject.Parse(response);
-            return responseJson.ToString();
+            return responseJson;
         }
 
         private static async Task<HttpClient> GetClient()

@@ -116,8 +116,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="APIWrappers\Gallery.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
+    <Compile Include="Models\Image.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\SharpImgur.rd.xml" />
   </ItemGroup>

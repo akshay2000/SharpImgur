@@ -49,7 +49,7 @@ namespace SharpImgur.Models
         public bool Favorite { get; set; }
 
         [JsonProperty("nsfw")]
-        public bool Nsfw { get; set; }
+        public bool? Nsfw { get; set; }
 
         [JsonProperty("section")]
         public string Section { get; set; }

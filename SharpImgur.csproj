@@ -116,6 +116,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIWrappers\Album.cs" />
     <Compile Include="APIWrappers\Gallery.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Models\Image.cs" />

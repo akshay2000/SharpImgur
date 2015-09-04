@@ -21,19 +21,19 @@ namespace SharpImgur.APIWrappers
             string uri = "gallery";
             if (section != null)
             {
-                uri = "/" + section.ToString().ToLower();
+                uri += "/" + section.ToString().ToLower();
                 if(sort != null)
                 {
-                    uri = "/" + sort.ToString().ToLower();
+                    uri += "/" + sort.ToString().ToLower();
                     if(window != null)
                     {
-                        uri = "/" + window.ToString().ToLower();
+                        uri += "/" + window.ToString().ToLower();
                         if (showViral != null)
                         {
-                            uri = "/" + showViral.ToString();
+                            uri += "/" + showViral.ToString();
                             if (page != null)
                             {
-                                uri = "/" + page;
+                                uri += "/" + page;
                             }
                         }
                     }

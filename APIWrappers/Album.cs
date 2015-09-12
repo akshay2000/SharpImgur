@@ -11,11 +11,11 @@ namespace SharpImgur.APIWrappers
 {
     public class Album
     {
-        public static async Task<List<Image>> GetImages(string albumId)
+        public static async Task<Models.Album> GetAlbum(string albumId)
         {
-            string uri = "album/" + albumId + "/images";
+            string uri = "album/" + albumId;
             JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return response["data"].ToObject<Models.Album>();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,15 @@ namespace SharpImgur.Helpers
         {
             HttpClient httpClient = await GetClient();
             string uri = baseURI + relativeUri;
-            string response = await httpClient.GetStringAsync(new Uri(uri));
+            string response = "{}";
+            try
+            {
+                response = await httpClient.GetStringAsync(new Uri(uri));
+            }
+            catch
+            {
+                Debug.WriteLine("Netwrok Error!");
+            }
             JObject responseJson = JObject.Parse(response);
             return responseJson;
         }

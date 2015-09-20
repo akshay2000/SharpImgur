@@ -15,7 +15,10 @@ namespace SharpImgur.APIWrappers
         {
             string uri = "album/" + albumId;
             JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<Models.Album>();
+            if (response.HasValues)
+                return response["data"].ToObject<Models.Album>();
+            else
+                return new Models.Album();
         }
     }
 }

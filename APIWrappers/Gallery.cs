@@ -16,6 +16,7 @@ namespace SharpImgur.APIWrappers
         public enum Sort { Viral, Time }
 
         public enum Window { Day, Week, Month, Year, All }
+
         public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, Window? window = null, bool? showViral = null, int? page = null)
         {
             string uri = "gallery";
@@ -42,5 +43,27 @@ namespace SharpImgur.APIWrappers
             JObject response = await NetworkHelper.ExecuteRequest(uri);
             return response["data"].ToObject<List<Image>>();
         }
+
+        public static async Task<List<Image>> GetSubreddditGallery(string subreddit, Sort? sort = null, Window? window = null, int? page = null)
+        {
+            //{ subreddit}/{ sort}/{ window}/{ page}
+            string uri = "gallery/r/" + subreddit;
+            if (sort != null)
+            {
+                uri += "/" + sort.ToString().ToLower();
+                if (window != null)
+                {
+                    uri += "/" + window.ToString().ToLower();
+
+                    if (page != null)
+                    {
+                        uri += "/" + page;
+                    }
+                }
+            }
+            JObject response = await NetworkHelper.ExecuteRequest(uri);
+            return response["data"].ToObject<List<Image>>();
+        }
+            
     }
 }

@@ -73,19 +73,19 @@ namespace SharpImgur.Models
         public string Link { get; set; }
 
         [JsonProperty("comment_count")]
-        public int CommentCount { get; set; }
+        public int? CommentCount { get; set; }
 
         [JsonProperty("ups")]
-        public int Ups { get; set; }
+        public int? Ups { get; set; }
 
         [JsonProperty("downs")]
-        public int Downs { get; set; }
+        public int? Downs { get; set; }
 
         [JsonProperty("points")]
-        public int Points { get; set; }
+        public int? Points { get; set; }
 
         [JsonProperty("score")]
-        public int Score { get; set; }
+        public int? Score { get; set; }
 
         [JsonProperty("is_album")]
         public bool IsAlbum { get; set; }

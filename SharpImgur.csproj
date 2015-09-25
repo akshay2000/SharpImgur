@@ -120,6 +120,7 @@
     <Compile Include="APIWrappers\Gallery.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\SharpImgur.rd.xml" />

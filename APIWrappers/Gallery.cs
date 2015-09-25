@@ -13,7 +13,7 @@ namespace SharpImgur.APIWrappers
     {
         public enum Section { Hot, Top, User }
  
-        public enum Sort { Viral, Time }
+        public enum Sort { Viral, Time, Best }
 
         public enum Window { Day, Week, Month, Year, All }
 
@@ -63,6 +63,16 @@ namespace SharpImgur.APIWrappers
             }
             JObject response = await NetworkHelper.ExecuteRequest(uri);
             return response["data"].ToObject<List<Image>>();
+        }
+
+        public static async Task<List<Comment>> GetComments(string imageId, Sort sort = Sort.Best)
+        {
+            //gallery/{id}/comments/{sort}
+            string uri = "gallery/" + imageId + "/comments/" + sort.ToString().ToLower();
+            JObject response = await NetworkHelper.ExecuteRequest(uri);
+            if (response["data"] == null)
+                return new List<Comment>();
+            return response["data"].ToObject<List<Comment>>();
         }
             
     }

@@ -55,7 +55,7 @@ namespace SharpImgur.Models
         public string Section { get; set; }
 
         [JsonProperty("account_url")]
-        public object AccountUrl { get; set; }
+        public string AccountUrl { get; set; }
 
         [JsonProperty("account_id")]
         public object AccountId { get; set; }
@@ -71,6 +71,9 @@ namespace SharpImgur.Models
 
         [JsonProperty("link")]
         public string Link { get; set; }
+
+        [JsonProperty("mp4")]
+        public string Mp4 { get; set; }
 
         [JsonProperty("comment_count")]
         public int? CommentCount { get; set; }

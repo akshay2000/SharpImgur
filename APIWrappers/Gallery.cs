@@ -6,17 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SharpImgur.APIWrappers.Enums;
 
 namespace SharpImgur.APIWrappers
 {
-    public class Gallery
+    public static class Gallery
     {
-        public enum Section { Hot, Top, User }
- 
-        public enum Sort { Viral, Time, Best }
-
-        public enum Window { Day, Week, Month, Year, All }
-
         public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, Window? window = null, bool? showViral = null, int? page = null)
         {
             string uri = "gallery";

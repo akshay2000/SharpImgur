@@ -13,12 +13,13 @@ namespace SharpImgur.Helpers
     {
         private static HttpClient httpClient;
         private static string baseURI = "https://imgur-apiv3.p.mashape.com/3/";
+        private static string imgurBaseURI = "https://api.imgur.com/3/";
         private static JObject configuration;
 
-        public static async Task<JObject> ExecuteRequest(string relativeUri)
+        public static async Task<JObject> ExecuteRequest(string relativeUri, bool isNative = false)
         {
             HttpClient httpClient = await GetClient();
-            string uri = baseURI + relativeUri;
+            string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
             string response = "{}";
             try
             {

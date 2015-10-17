@@ -10,7 +10,7 @@ namespace SharpImgur.Models
     public class Comment
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
 
         [JsonProperty("image_id")]
         public string ImageId { get; set; }
@@ -22,7 +22,7 @@ namespace SharpImgur.Models
         public string Author { get; set; }
 
         [JsonProperty("author_id")]
-        public int AuthorId { get; set; }
+        public Int64 AuthorId { get; set; }
 
         [JsonProperty("on_album")]
         public bool OnAlbum { get; set; }
@@ -31,19 +31,19 @@ namespace SharpImgur.Models
         public object AlbumCover { get; set; }
 
         [JsonProperty("ups")]
-        public int Ups { get; set; }
+        public Int64 Ups { get; set; }
 
         [JsonProperty("downs")]
-        public int Downs { get; set; }
+        public Int64 Downs { get; set; }
 
-        [JsonProperty("points")]
-        public int Points { get; set; }
+        [JsonProperty("poInt64s")]
+        public Int64 PoInt64s { get; set; }
 
         [JsonProperty("datetime")]
-        public int Datetime { get; set; }
+        public Int64 Datetime { get; set; }
 
         [JsonProperty("parent_id")]
-        public int ParentId { get; set; }
+        public Int64 ParentId { get; set; }
 
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }

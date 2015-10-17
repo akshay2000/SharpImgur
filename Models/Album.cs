@@ -20,22 +20,22 @@ namespace SharpImgur.Models
         public object Description { get; set; }
 
         [JsonProperty("datetime")]
-        public int Datetime { get; set; }
+        public Int64 Datetime { get; set; }
 
         [JsonProperty("cover")]
         public string Cover { get; set; }
 
         [JsonProperty("cover_width")]
-        public int CoverWidth { get; set; }
+        public Int64? CoverWidth { get; set; }
 
         [JsonProperty("cover_height")]
-        public int CoverHeight { get; set; }
+        public Int64? CoverHeight { get; set; }
 
         [JsonProperty("account_url")]
         public string AccountUrl { get; set; }
 
         [JsonProperty("account_id")]
-        public int? AccountId { get; set; }
+        public Int64? AccountId { get; set; }
 
         [JsonProperty("privacy")]
         public string Privacy { get; set; }
@@ -44,7 +44,7 @@ namespace SharpImgur.Models
         public string Layout { get; set; }
 
         [JsonProperty("views")]
-        public int Views { get; set; }
+        public Int64 Views { get; set; }
 
         [JsonProperty("link")]
         public string Link { get; set; }
@@ -59,7 +59,7 @@ namespace SharpImgur.Models
         public string Section { get; set; }
 
         [JsonProperty("images_count")]
-        public int ImagesCount { get; set; }
+        public Int64 ImagesCount { get; set; }
 
         [JsonProperty("images")]
         public List<Image> Images { get; set; }

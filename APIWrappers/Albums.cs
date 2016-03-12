@@ -9,7 +9,7 @@ using SharpImgur.Helpers;
 
 namespace SharpImgur.APIWrappers
 {
-    public class Album
+    public class Albums
     {
         public static async Task<Models.Album> GetAlbum(string albumId)
         {

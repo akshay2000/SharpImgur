@@ -10,7 +10,7 @@ using static SharpImgur.APIWrappers.Enums;
 
 namespace SharpImgur.APIWrappers
 {
-    public static class Topic
+    public static class Topics
     {
         public static async Task<List<Image>> GetTopicGallery(int topicId, Sort? sort = null, Window? window = null, int? page = null)
         {

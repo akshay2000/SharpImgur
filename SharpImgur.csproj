@@ -116,6 +116,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIWrappers\Accounts.cs" />
     <Compile Include="APIWrappers\Albums.cs" />
     <Compile Include="APIWrappers\Enums.cs" />
     <Compile Include="APIWrappers\Gallery.cs" />
@@ -124,10 +125,13 @@
     <Compile Include="Helpers\NetworkHelper.cs" />
     <Compile Include="Helpers\SecretsHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\GalleryProfile.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Topic.cs" />
+    <Compile Include="Models\Trophy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\SharpImgur.rd.xml" />
   </ItemGroup>

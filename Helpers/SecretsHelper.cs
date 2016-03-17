@@ -73,7 +73,7 @@ namespace SharpImgur.Helpers
         }
 
         private static string userName;
-        private static async Task<string> GetUserName()
+        public static async Task<string> GetUserName()
         {
             if (userName == null)
                 userName = SettingsHelper.GetLocalValue<string>(userNameKey);

@@ -38,5 +38,33 @@ namespace SharpImgur.APIWrappers
             JObject result = await NetworkHelper.ExecuteRequest(url);
             return result["data"].ToObject<Account>();
         }
+
+        public static async Task<List<Image>> GetImages()
+        {
+            string userName = await SecretsHelper.GetUserName();
+            return await GetImages(userName);
+        }
+
+        public static async Task<List<Image>> GetImages(string userName)
+        {
+            const string urlPattern = "account/{0}/images/";
+            string url = string.Format(urlPattern, userName);
+            JObject result = await NetworkHelper.ExecuteRequest(url);
+            return result["data"].ToObject<List<Image>>();
+        }
+
+        public static async Task<List<Album>> GetAlbums()
+        {
+            string userName = await SecretsHelper.GetUserName();
+            return await GetAlbums(userName);
+        }
+
+        public static async Task<List<Album>> GetAlbums(string userName)
+        {
+            const string urlPattern = "account/{0}/albums/";
+            string url = string.Format(urlPattern, userName);
+            JObject result = await NetworkHelper.ExecuteRequest(url);
+            return result["data"].ToObject<List<Album>>();
+        }
     }
 }

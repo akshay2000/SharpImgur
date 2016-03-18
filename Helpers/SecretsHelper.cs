@@ -84,5 +84,17 @@ namespace SharpImgur.Helpers
             }
             return userName;
         }
+
+        public static async Task RefreshSecrets()
+        {
+            string userName = await AuthenticationHelper.GetUserName();
+            SettingsHelper.SetLocalValue(userNameKey, userName);
+            string accessToken = await AuthenticationHelper.GetAccessToken();
+            PasswordCredential aCred = new PasswordCredential("AccessToken", userName, accessToken);
+            GetVault().Add(aCred);
+            string refreshToken = await AuthenticationHelper.GetRefreshToken();
+            PasswordCredential rCred = new PasswordCredential("RefreshToken", userName, refreshToken);
+            GetVault().Add(rCred);
+        }
     }
 }

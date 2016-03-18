@@ -17,7 +17,7 @@ namespace SharpImgur.Models
         public string Title { get; set; }
 
         [JsonProperty("description")]
-        public object Description { get; set; }
+        public string Description { get; set; }
 
         [JsonProperty("datetime")]
         public Int64 Datetime { get; set; }

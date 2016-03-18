@@ -49,5 +49,10 @@ namespace SharpImgur.Helpers
             }
             return (T)AppLocalSettings.Values[key];
         }
+
+        public static void RemoveLocalValue(string key)
+        {
+            AppLocalSettings.Values.Remove(key);
+        }
     }
 }

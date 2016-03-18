@@ -17,12 +17,15 @@ namespace SharpImgur.Helpers
         private const string userNameKey = "account_username";
         private const string accessTokenKey = "access_token";
         private const string refreshTokenKey = "refresh_token";
+        private const string isAuthIntendedKey = "IsAuthIntended";
 
         public static async Task<string> Auth()
         {
+            SettingsHelper.SetLocalValue(isAuthIntendedKey, false);
             JObject config = await SecretsHelper.GetConfiguration();
             Uri uri = new Uri(string.Format(authUrlPattern, config["Client_Id"]));
             var result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, uri, new Uri(callback));
+            SettingsHelper.SetLocalValue(isAuthIntendedKey, true);
             return result.ResponseData;
         }
 
@@ -42,7 +45,7 @@ namespace SharpImgur.Helpers
 
         private static async Task<Dictionary<string, string>> GetAuthResult()
         {
-            if(authResult == null)
+            if (authResult == null)
             {
                 string resultString = await Auth();
                 authResult = ParseAuthResult(resultString);
@@ -66,6 +69,11 @@ namespace SharpImgur.Helpers
         {
             Dictionary<string, string> result = await GetAuthResult();
             return result[userNameKey];
+        }
+
+        public static bool IsAuthIntended()
+        {
+            return SettingsHelper.GetLocalValue<bool>(isAuthIntendedKey, false);
         }
     }
 }

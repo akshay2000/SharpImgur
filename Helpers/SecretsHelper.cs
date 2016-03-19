@@ -15,6 +15,7 @@ namespace SharpImgur.Helpers
         private static PasswordVault vault;
 
         private const string userNameKey = "UserName";
+        private const string expiryKey = "Expiry";
 
         public static async Task<JObject> GetConfiguration()
         {
@@ -36,13 +37,28 @@ namespace SharpImgur.Helpers
             string token;
             try
             {
-                token = GetVault().Retrieve(resource, userName).Password;
+                DateTime expiry = DateTime.Parse(SettingsHelper.GetLocalValue<string>(expiryKey, DateTime.MinValue.ToString()));
+                if (expiry == DateTime.MinValue)
+                    throw new Exception("Force execute catch block");
+#if DEBUG
+                expiry = DateTime.MinValue;
+#endif
+                if (expiry > DateTime.Now)
+                {
+                    token = GetVault().Retrieve(resource, userName).Password;
+                }
+                else
+                {
+                    token = await AuthenticationHelper.RefreshAccessToken(await GetRefreshToken());
+                    SettingsHelper.SetLocalValue(expiryKey, (await AuthenticationHelper.GetExpiresAt()).ToString());
+                }
             }
             catch
             {
                 token = await AuthenticationHelper.GetAccessToken();
                 PasswordCredential cred = new PasswordCredential(resource, userName, token);
                 GetVault().Add(cred);
+                SettingsHelper.SetLocalValue(expiryKey, (await AuthenticationHelper.GetExpiresAt()).ToString());
             }
             return token;
         }

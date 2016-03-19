@@ -33,6 +33,30 @@ namespace SharpImgur.Helpers
             return responseJson;
         }
 
+        public static async Task<JObject> ExecutePostRequest(string relativeUri, JObject payload, bool isNative = false)
+        {
+            string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
+            return await ExecutePostRequest(new Uri(uri), payload, isNative);
+        }
+
+        public static async Task<JObject> ExecutePostRequest(Uri uri, JObject payload, bool isNative = false)
+        {
+            HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();            
+            string response = "{}";
+            try
+            {
+                IHttpContent content = new HttpStringContent(payload.ToString(), Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
+                var r = await httpClient.PostAsync(uri, content);
+                response = await r.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                Debug.WriteLine("Netwrok Error!");
+            }
+            JObject responseJson = JObject.Parse(response);
+            return responseJson;
+        }
+
         private static async Task<HttpClient> GetClient()
         {
             if (httpClient == null)

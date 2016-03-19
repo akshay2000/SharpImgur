@@ -51,6 +51,7 @@ namespace SharpImgur.APIWrappers
             string url = string.Format(urlPattern, userName);
             JObject result = await NetworkHelper.ExecuteRequest(url);
             return result["data"].ToObject<List<Image>>();
+            //return new List<Image>();
         }
 
         public static async Task<List<Album>> GetAlbums()

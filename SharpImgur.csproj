@@ -123,6 +123,7 @@
     <Compile Include="APIWrappers\Topics.cs" />
     <Compile Include="Helpers\AuthenticationHelper.cs" />
     <Compile Include="Helpers\NetworkHelper.cs" />
+    <Compile Include="Helpers\PasswordVaultExtensions.cs" />
     <Compile Include="Helpers\SecretsHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Models\Account.cs" />

@@ -41,7 +41,9 @@ namespace SharpImgur.Helpers
                 string[] splits = frag.Split('=');
                 ret.Add(splits[0], splits[1]);
             }
-            ret[expiresAtKey] = DateTime.Now.AddSeconds(int.Parse(ret["expires_in"])).ToString();
+            //ret[expiresAtKey] = DateTime.Now.AddSeconds(int.Parse(ret["expires_in"])).ToString();
+            //Imgur API is a liar. It says the token is valid for a month but expires it in an hour anyway.
+            ret[expiresAtKey] = DateTime.Now.AddSeconds(3600).ToString();
             return ret;                
         }
 

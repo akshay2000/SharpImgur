@@ -70,7 +70,7 @@ namespace SharpImgur.Helpers
             {
                 token = await AuthenticationHelper.GetRefreshToken();
                 UpdateCredentials(await AuthenticationHelper.GetAccessToken(), token);
-            }            
+            }
             return token;
         }
 

@@ -105,8 +105,9 @@ namespace SharpImgur.Helpers
             ret[userNameKey] = (string)result["account_username"];
             ret[accessTokenKey] = (string)result["access_token"];
             ret[refreshTokenKey] = (string)result["refresh_token"];
-            ret[expiresAtKey] = DateTime.Now.AddSeconds((int)result["expires_in"]).ToString();
-
+            //ret[expiresAtKey] = DateTime.Now.AddSeconds((int)result["expires_in"]).ToString();
+            //We must do this because Imgur API lies about expiry time
+            ret[expiresAtKey] = DateTime.Now.AddSeconds(3600).ToString();
             authResult = ret;
             return await GetAccessToken();
         }

@@ -12,8 +12,9 @@ There's this Imgur app called [Monocle Giraffe](https://github.com/akshay2000/Mo
 Clone the repo and open the project in Visual Studio. It will complain that file `Secrets.json` does not exist. Create that file with following content.
 
     {
-      "Client_Id": "your-client-id",
-      "Mashape_Key": "your-mashape-key"
+        "Client_Id": "client-id",
+        "Mashape_Key": "mashape-key",
+        "Client_Secret": "client-secret"
     }
-    
+
 You can get those credentials from Imgur and Mashape respectively.

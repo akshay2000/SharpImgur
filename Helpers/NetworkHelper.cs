@@ -18,6 +18,9 @@ namespace SharpImgur.Helpers
 
         public static async Task<JObject> ExecuteRequest(string relativeUri, bool isNative = false)
         {
+#if DEBUG
+            isNative = true;
+#endif
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
             string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
             string response = "{}";

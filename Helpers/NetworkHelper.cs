@@ -11,22 +11,29 @@ namespace SharpImgur.Helpers
 {
     public class NetworkHelper
     {
+        #region Imgur
+
         private static HttpClient httpClient;
         private static HttpClient authHttpClient;
         private static string baseURI = "https://imgur-apiv3.p.mashape.com/3/";
         private static string imgurBaseURI = "https://api.imgur.com/3/";
 
-        public static async Task<JObject> ExecuteRequest(string relativeUri, bool isNative = false)
+        public static async Task<JObject> ExecuteRequest(string url, bool isNative = false)
         {
 #if DEBUG
             isNative = true;
 #endif
+            string finalUrl;
+            if (url.StartsWith("http"))
+                finalUrl = url;
+            else {
+                finalUrl = isNative ? imgurBaseURI + url : baseURI + url;
+            }
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
-            string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
             string response = "{}";
             try
             {
-                response = await httpClient.GetStringAsync(new Uri(uri));
+                response = await httpClient.GetStringAsync(new Uri(finalUrl));
             }
             catch
             {
@@ -64,7 +71,7 @@ namespace SharpImgur.Helpers
         {
             if (httpClient == null)
             {
-                httpClient = new HttpClient();                
+                httpClient = new HttpClient();
                 JObject config = await SecretsHelper.GetConfiguration();
                 httpClient.DefaultRequestHeaders["Authorization"] = "Client-ID " + (string)config["Client_Id"];
                 httpClient.DefaultRequestHeaders["X-Mashape-Key"] = (string)config["Mashape_Key"];               
@@ -82,6 +89,38 @@ namespace SharpImgur.Helpers
                 authHttpClient.DefaultRequestHeaders["Authorization"] = "Bearer " + await SecretsHelper.GetAccessToken();
             }
             return authHttpClient;
-        }        
+        }
+
+        #endregion
+
+        #region Reddit
+
+        public static async Task<JObject> ExecuteRedditRequest(string url)
+        {
+            HttpClient httpClient = GetRedditClient();
+            string response = "{}";
+            try
+            {
+                response = await httpClient.GetStringAsync(new Uri(url));
+            }
+            catch
+            {
+                Debug.WriteLine("Netwrok Error!");
+            }
+            JObject responseJson = JObject.Parse(response);
+            return responseJson;
+        }
+
+        private static HttpClient redditClient;
+        private static HttpClient GetRedditClient()
+        {
+            if (redditClient == null)
+            {
+                redditClient = new HttpClient();
+            }
+            return redditClient;
+        }
+
+        #endregion
     }
 }

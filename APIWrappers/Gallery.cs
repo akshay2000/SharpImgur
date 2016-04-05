@@ -69,6 +69,23 @@ namespace SharpImgur.APIWrappers
                 return new List<Comment>();
             return response["data"].ToObject<List<Comment>>();
         }
+
+        public static async Task<List<Image>> SearchGallery(string query, Sort? sort = null, int? page = null )
+        {
+            //https://api.imgur.com/3/gallery/search/{sort}/{page}
+            string uri = "gallery/search";
+            if (sort != null)
+            {
+                uri += "/" + sort.ToString().ToLower();
+                if (page != null)
+                {
+                    uri += "/" + page;
+                }
+            }
+            uri = $"{uri}?q={query}";
+            JObject response = await NetworkHelper.ExecuteRequest(uri);
+            return response["data"].ToObject<List<Image>>();
+        }
             
     }
 }

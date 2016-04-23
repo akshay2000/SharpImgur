@@ -33,6 +33,21 @@ namespace SharpImgur.APIWrappers
             return response["data"].ToObject<List<Image>>();
         }
 
+        public static async Task<List<Image>> GetTopicGallery(int topicId, Sort? sort = null, int? page = null)
+        {
+            //{topicId}/{sort}/{page}
+            string uri = "topics/" + topicId;
+            if (sort != null)
+            {
+                if (page != null)
+                {
+                    uri += "/" + page;
+                }
+            }
+            JObject response = await NetworkHelper.ExecuteRequest(uri);
+            return response["data"].ToObject<List<Image>>();
+        }
+
         public static async Task<List<Models.Topic>> GetDefaultTopics()
         {
             string uri = "topics/defaults";

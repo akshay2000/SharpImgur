@@ -39,6 +39,24 @@ namespace SharpImgur.APIWrappers
             return response["data"].ToObject<List<Image>>();
         }
 
+        public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, int? page = null)
+        {
+            string uri = "gallery";
+            if (section != null)
+            {
+                uri += "/" + section.ToString().ToLower();
+                if (sort != null)
+                {
+                    if (page != null)
+                    {
+                        uri += "/" + page;
+                    }
+                }                
+            }
+            JObject response = await NetworkHelper.ExecuteRequest(uri);
+            return response["data"].ToObject<List<Image>>();
+        }
+
         public static async Task<List<Image>> GetSubreddditGallery(string subreddit, Sort? sort = null, Window? window = null, int? page = null)
         {
             //{ subreddit}/{ sort}/{ window}/{ page}

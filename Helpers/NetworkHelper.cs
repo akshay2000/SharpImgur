@@ -33,7 +33,8 @@ namespace SharpImgur.Helpers
             string response = "{}";
             try
             {
-                response = await httpClient.GetStringAsync(new Uri(finalUrl));
+                var r = await httpClient.GetAsync(new Uri(finalUrl));
+                response = await r.Content.ReadAsStringAsync();
             }
             catch
             {

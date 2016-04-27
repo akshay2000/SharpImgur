@@ -99,8 +99,8 @@ namespace SharpImgur.APIWrappers
             //gallery/{id}/comments/{sort}
             string uri = "gallery/" + imageId + "/comments/" + sort.ToString().ToLower();
             JObject response = await NetworkHelper.ExecuteRequest(uri);
-            if (response["data"] == null)
-                return new List<Comment>();
+            if (response["data"] == null || !(bool)response["success"])
+                return null;
             return response["data"].ToObject<List<Comment>>();
         }
 

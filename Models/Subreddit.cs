@@ -14,10 +14,10 @@ namespace SharpImgur.Models
         public string Title { get; set; }
 
         [JsonProperty("over18")]
-        public bool Over18 { get; set; }
+        public bool? Over18 { get; set; }
 
         [JsonProperty("subscribers")]
-        public int Subscribers { get; set; }
+        public int? Subscribers { get; set; }
         
         [JsonProperty("name")]
         public string Name { get; set; }

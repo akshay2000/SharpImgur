@@ -110,7 +110,7 @@ namespace SharpImgur.Helpers
 
         public static async Task RefreshSecrets()
         {
-            string userName = await AuthenticationHelper.GetUserName();
+            string userName = await GetUserName();
             SettingsHelper.SetLocalValue(userNameKey, userName);
             string accessToken = await AuthenticationHelper.GetAccessToken();
             PasswordCredential aCred = new PasswordCredential(accessResource, userName, accessToken);

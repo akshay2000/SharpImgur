@@ -87,7 +87,14 @@ namespace SharpImgur.Helpers
                 authHttpClient = new HttpClient();
                 JObject config = await SecretsHelper.GetConfiguration();
                 authHttpClient.DefaultRequestHeaders["X-Mashape-Key"] = (string)config["Mashape_Key"];
-                authHttpClient.DefaultRequestHeaders["Authorization"] = "Bearer " + await SecretsHelper.GetAccessToken();
+                try
+                {
+                    authHttpClient.DefaultRequestHeaders["Authorization"] = "Bearer " + await SecretsHelper.GetAccessToken();
+                }
+                catch
+                {
+                    return await GetClient();
+                }
             }
             return authHttpClient;
         }

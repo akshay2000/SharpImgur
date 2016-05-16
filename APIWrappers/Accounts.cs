@@ -11,12 +11,6 @@ namespace SharpImgur.APIWrappers
 {
     public static class Accounts
     {
-        public static async Task<GalleryProfile> GetGalleryProfile()
-        {
-            string userName = await SecretsHelper.GetUserName();
-            return await GetGalleryProfile(userName);
-        }
-
         public static async Task<GalleryProfile> GetGalleryProfile(string userName)
         {
             const string urlPattern = "account/{0}/gallery_profile";
@@ -25,24 +19,12 @@ namespace SharpImgur.APIWrappers
             return result["data"].ToObject<GalleryProfile>();
         }
 
-        public static async Task<Account> GetAccount()
-        {
-            string userName = await SecretsHelper.GetUserName();
-            return await GetAccount(userName);
-        }
-
         public static async Task<Account> GetAccount(string userName)
         {
             const string urlPattern = "account/{0}";
             string url = string.Format(urlPattern, userName);
             JObject result = await NetworkHelper.ExecuteRequest(url);
             return result["data"].ToObject<Account>();
-        }
-
-        public static async Task<List<Image>> GetImages()
-        {
-            string userName = await SecretsHelper.GetUserName();
-            return await GetImages(userName);
         }
 
         public static async Task<List<Image>> GetImages(string userName)
@@ -54,12 +36,6 @@ namespace SharpImgur.APIWrappers
             //return new List<Image>();
         }
 
-        public static async Task<int> GetImageCount()
-        {
-            string userName = await SecretsHelper.GetUserName();
-            return await GetImageCount(userName);
-        }
-
         private static async Task<int> GetImageCount(string userName)
         {
             const string urlPattern = "account/{0}/images/count";
@@ -68,25 +44,13 @@ namespace SharpImgur.APIWrappers
             return result["data"].ToObject<int>();
         }
 
-        public static async Task<List<Album>> GetAlbums()
-        {
-            string userName = await SecretsHelper.GetUserName();
-            return await GetAlbums(userName);
-        }
-
         public static async Task<List<Album>> GetAlbums(string userName)
         {
             const string urlPattern = "account/{0}/albums/";
             string url = string.Format(urlPattern, userName);
             JObject result = await NetworkHelper.ExecuteRequest(url);
             return result["data"].ToObject<List<Album>>();
-        }
-
-        public static async Task<int> GetAlbumCount()
-        {
-            string userName = await SecretsHelper.GetUserName();
-            return await GetAlbumCount(userName);
-        }
+        }        
 
         private static async Task<int> GetAlbumCount(string userName)
         {

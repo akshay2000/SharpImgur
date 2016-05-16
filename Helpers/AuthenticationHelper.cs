@@ -26,6 +26,10 @@ namespace SharpImgur.Helpers
             JObject config = await SecretsHelper.GetConfiguration();
             Uri uri = new Uri(string.Format(authUrlPattern, config["Client_Id"]));
             var result = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, uri, new Uri(callback));
+            if (result.ResponseStatus == WebAuthenticationStatus.ErrorHttp)
+                throw new AuthException($"Error Code: {result.ResponseErrorDetail}");
+            else if (result.ResponseStatus == WebAuthenticationStatus.UserCancel)
+                throw new AuthException($"User cancelled the auth process");
             SettingsHelper.SetLocalValue(isAuthIntendedKey, true);
             return result.ResponseData;
         }
@@ -111,5 +115,21 @@ namespace SharpImgur.Helpers
             authResult = ret;
             return await GetAccessToken();
         }
+    }
+
+    public class AuthException : Exception
+    {
+        public AuthException() { }
+        public AuthException(string message) : base(message) { }
+        public AuthException(string message, AuthExceptionReason reason) : base(message) { Reason = reason; }
+        public AuthException(string message, Exception inner) : base(message, inner) { }
+
+        public AuthExceptionReason Reason{ get; set; }
+
+        public enum AuthExceptionReason
+        {
+            UserCancelled,
+            HttpError
+        } 
     }
 }

@@ -57,6 +57,14 @@ namespace SharpImgur.Helpers
             return token;
         }
 
+        public static async Task RefreshAccessToken()
+        {
+            NetworkHelper.FlushHttpClients();
+            var accessToken = await AuthenticationHelper.RefreshAccessToken(await GetRefreshToken());
+            UpdateCredentials(accessToken, await AuthenticationHelper.GetRefreshToken());
+            SettingsHelper.SetLocalValue(expiryKey, (await AuthenticationHelper.GetExpiresAt()).ToString());
+        }
+
         public static async Task<string> GetRefreshToken()
         {
             string userName = await GetUserName();

@@ -52,7 +52,7 @@ namespace SharpImgur.Helpers
 
         public static async Task<JObject> ExecutePostRequest(Uri uri, JObject payload, bool isNative = false)
         {
-            HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();            
+            HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
             string response = "{}";
             try
             {
@@ -66,6 +66,11 @@ namespace SharpImgur.Helpers
             }
             JObject responseJson = JObject.Parse(response);
             return responseJson;
+        }
+
+        internal static void FlushHttpClients()
+        {
+            httpClient = authHttpClient = null;
         }
 
         private static async Task<HttpClient> GetClient()

@@ -118,6 +118,7 @@
   <ItemGroup>
     <Compile Include="APIWrappers\Accounts.cs" />
     <Compile Include="APIWrappers\Albums.cs" />
+    <Compile Include="APIWrappers\Comments.cs" />
     <Compile Include="APIWrappers\Enums.cs" />
     <Compile Include="APIWrappers\Gallery.cs" />
     <Compile Include="APIWrappers\Reddits.cs" />

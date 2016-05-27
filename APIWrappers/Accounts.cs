@@ -36,7 +36,7 @@ namespace SharpImgur.APIWrappers
             //return new List<Image>();
         }
 
-        private static async Task<int> GetImageCount(string userName)
+        public static async Task<int> GetImageCount(string userName)
         {
             const string urlPattern = "account/{0}/images/count";
             string url = string.Format(urlPattern, userName);
@@ -52,12 +52,22 @@ namespace SharpImgur.APIWrappers
             return result["data"].ToObject<List<Album>>();
         }        
 
-        private static async Task<int> GetAlbumCount(string userName)
+        public static async Task<int> GetAlbumCount(string userName)
         {
             const string urlPattern = "account/{0}/albums/count";
             string url = string.Format(urlPattern, userName);
             JObject result = await NetworkHelper.ExecuteRequest(url);
             return result["data"].ToObject<int>();
+        }
+
+        public static async Task<List<Image>> GetFavourites(string userName)
+        {
+            string uri = $"account/{userName}/favorites";
+            JObject result = await NetworkHelper.ExecuteRequest(uri);
+            if (result.HasValues && (bool)result["success"])
+                return result["data"].ToObject<List<Image>>();
+            else
+                return new List<Image>();
         }
     }
 }

@@ -67,7 +67,7 @@ namespace SharpImgur.Models
         public object Topic { get; set; }
 
         [JsonProperty("topic_id")]
-        public int TopicId { get; set; }
+        public int? TopicId { get; set; }
 
         [JsonProperty("link")]
         public string Link { get; set; }

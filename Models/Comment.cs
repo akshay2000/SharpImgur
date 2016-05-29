@@ -36,8 +36,8 @@ namespace SharpImgur.Models
         [JsonProperty("downs")]
         public Int64 Downs { get; set; }
 
-        [JsonProperty("poInt64s")]
-        public Int64 PoInt64s { get; set; }
+        [JsonProperty("points")]
+        public Int64 Points { get; set; }
 
         [JsonProperty("datetime")]
         public Int64 Datetime { get; set; }
@@ -49,7 +49,7 @@ namespace SharpImgur.Models
         public bool Deleted { get; set; }
 
         [JsonProperty("vote")]
-        public object Vote { get; set; }
+        public string Vote { get; set; }
 
         [JsonProperty("platform")]
         public string Platform { get; set; }

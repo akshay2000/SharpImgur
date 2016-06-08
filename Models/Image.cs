@@ -43,7 +43,7 @@ namespace SharpImgur.Models
         public long Bandwidth { get; set; }
 
         [JsonProperty("vote")]
-        public object Vote { get; set; }
+        public string Vote { get; set; }
 
         [JsonProperty("favorite")]
         public bool Favorite { get; set; }

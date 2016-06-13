@@ -129,6 +129,7 @@
     <Compile Include="Helpers\SecretsHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AccountSettings.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\GalleryProfile.cs" />

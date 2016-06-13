@@ -69,5 +69,25 @@ namespace SharpImgur.APIWrappers
             else
                 return new List<Image>();
         }
+
+        public static async Task<AccountSettings> GetAccountSettings(string userName)
+        {
+            string uri = $"account/{userName}/settings";
+            JObject result = await NetworkHelper.ExecuteRequest(uri);
+            if (result.HasValues && (bool)result["success"])
+                return result["data"].ToObject<AccountSettings>();
+            else
+                return null;
+        }
+
+        public static async Task<bool> SaveAccountSettings(string userName, JObject payload)
+        {
+            string uri = $"account/{userName}/settings";
+            JObject result = await NetworkHelper.ExecutePostRequest(uri, payload);
+            if (result.HasValues)
+                return (bool)result["success"];
+            else
+                return false;
+        }
     }
 }

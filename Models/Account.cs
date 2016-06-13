@@ -16,7 +16,7 @@ namespace SharpImgur.Models
         public string Url { get; set; }
 
         [JsonProperty("bio")]
-        public object Bio { get; set; }
+        public string Bio { get; set; }
 
         [JsonProperty("reputation")]
         public int Reputation { get; set; }

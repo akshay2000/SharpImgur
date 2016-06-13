@@ -39,7 +39,15 @@ namespace SharpImgur.APIWrappers
             return response["data"].ToObject<List<Image>>();
         }
 
-        public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, int? page = null)
+        /// <summary>
+        /// Gets the gallery
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="sort"></param>
+        /// <param name="page"></param>
+        /// <param name="showViral">Used only when section is "user"</param>
+        /// <returns></returns>
+        public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, int? page = null, bool? showViral = null)
         {
             string uri = "gallery";
             if (section != null)
@@ -53,9 +61,13 @@ namespace SharpImgur.APIWrappers
                     }
                 }                
             }
+            if (showViral != null)
+                uri += ("?showViral=" + showViral.ToString().ToLower());
             JObject response = await NetworkHelper.ExecuteRequest(uri);
             return response["data"].ToObject<List<Image>>();
         }
+
+
 
         public static async Task<List<Image>> GetSubreddditGallery(string subreddit, Sort? sort = null, Window? window = null, int? page = null)
         {

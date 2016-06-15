@@ -121,6 +121,7 @@
     <Compile Include="APIWrappers\Comments.cs" />
     <Compile Include="APIWrappers\Enums.cs" />
     <Compile Include="APIWrappers\Gallery.cs" />
+    <Compile Include="APIWrappers\Images.cs" />
     <Compile Include="APIWrappers\Reddits.cs" />
     <Compile Include="APIWrappers\Topics.cs" />
     <Compile Include="Helpers\AuthenticationHelper.cs" />

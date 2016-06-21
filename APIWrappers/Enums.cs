@@ -10,7 +10,7 @@ namespace SharpImgur.APIWrappers
     {
         public enum Section { Hot, Top, User }
 
-        public enum Sort { Viral, Time, Best }
+        public enum Sort { Viral, Time, Best, Top }
 
         public enum Window { Day, Week, Month, Year, All }
     }

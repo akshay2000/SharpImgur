@@ -12,7 +12,7 @@ namespace SharpImgur.APIWrappers
 {
     public static class Topics
     {
-        public static async Task<List<Image>> GetTopicGallery(int topicId, Sort? sort = null, Window? window = null, int? page = null)
+        public static async Task<Response<List<Image>>> GetTopicGallery(int topicId, Sort? sort = null, Window? window = null, int? page = null)
         {
             //{topicId}/{sort}/{window}/{page}
             string uri = "topics/" + topicId;
@@ -29,11 +29,10 @@ namespace SharpImgur.APIWrappers
                     }
                 }
             }
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
 
-        public static async Task<List<Image>> GetTopicGallery(int topicId, Sort? sort = null, int? page = null)
+        public static async Task<Response<List<Image>>> GetTopicGallery(int topicId, Sort? sort = null, int? page = null)
         {
             //{topicId}/{sort}/{page}
             string uri = "topics/" + topicId;
@@ -44,15 +43,13 @@ namespace SharpImgur.APIWrappers
                     uri += "/" + page;
                 }
             }
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
 
-        public static async Task<List<Models.Topic>> GetDefaultTopics()
+        public static async Task<Response<List<Topic>>> GetDefaultTopics()
         {
             string uri = "topics/defaults";
-            JObject response = await NetworkHelper.ExecuteRequest(uri, true);
-            return response["data"].ToObject<List<Models.Topic>>();
+            return await NetworkHelper.GetRequest<List<Topic>>(uri, true);
         }
     }
 }

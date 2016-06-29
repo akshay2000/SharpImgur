@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SharpImgur.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,6 +19,7 @@ namespace SharpImgur.Helpers
         private static string baseURI = "https://imgur-apiv3.p.mashape.com/3/";
         private static string imgurBaseURI = "https://api.imgur.com/3/";
 
+        [Obsolete("Use GetRequest instead")]
         public static async Task<JObject> ExecuteRequest(string url, bool isNative = false)
         {
 #if DEBUG
@@ -30,18 +32,40 @@ namespace SharpImgur.Helpers
                 finalUrl = isNative ? imgurBaseURI + url : baseURI + url;
             }
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
-            string response = "{}";
-            try
-            {
+            //string response = "{}";
+            //try
+            //{
                 var r = await httpClient.GetAsync(new Uri(finalUrl));
-                response = await r.Content.ReadAsStringAsync();
-            }
-            catch
-            {
-                Debug.WriteLine("Netwrok Error!");
-            }
+                string response = await r.Content.ReadAsStringAsync();
+            //}
+            //catch
+            //{
+                //Debug.WriteLine("Netwrok Error!");
+            //}
             JObject responseJson = JObject.Parse(response);
             return responseJson;
+        }
+
+        public static async Task<Response<T>> GetRequest<T>(string url, bool isNative = false) where T:new()
+        {
+            Response<T> response = new Response<T>();
+            try
+            {
+                JObject o = await ExecuteRequest(url, isNative);
+                if ((bool)o["success"])
+                    response.Content = o["data"].ToObject<T>();
+                else
+                {
+                    response.IsError = true;
+                    response.Message = o["data"]["error"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.Error = ex;
+            }
+            return response;
         }
 
         public static async Task<JObject> ExecutePostRequest(string relativeUri, JObject payload, bool isNative = false)

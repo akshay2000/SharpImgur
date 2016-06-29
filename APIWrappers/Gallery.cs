@@ -12,7 +12,7 @@ namespace SharpImgur.APIWrappers
 {
     public static class Gallery
     {
-        public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, Window? window = null, bool? showViral = null, int? page = null)
+        public static async Task<Response<List<Image>>> GetGallery(Section? section = null, Sort? sort = null, Window? window = null, bool? showViral = null, int? page = null)
         {
             string uri = "gallery";
             if (section != null)
@@ -35,8 +35,7 @@ namespace SharpImgur.APIWrappers
                     }
                 }
             }
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace SharpImgur.APIWrappers
         /// <param name="page"></param>
         /// <param name="showViral">Used only when section is "user"</param>
         /// <returns></returns>
-        public static async Task<List<Image>> GetGallery(Section? section = null, Sort? sort = null, int? page = null, bool? showViral = null)
+        public static async Task<Response<List<Image>>> GetGallery(Section? section = null, Sort? sort = null, int? page = null, bool? showViral = null)
         {
             string uri = "gallery";
             if (section != null)
@@ -63,13 +62,11 @@ namespace SharpImgur.APIWrappers
             }
             if (showViral != null)
                 uri += ("?showViral=" + showViral.ToString().ToLower());
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            var response = await NetworkHelper.GetRequest<List<Image>>(uri);
+            return response;
         }
 
-
-
-        public static async Task<List<Image>> GetSubreddditGallery(string subreddit, Sort? sort = null, Window? window = null, int? page = null)
+        public static async Task<Response<List<Image>>> GetSubreddditGallery(string subreddit, Sort? sort = null, Window? window = null, int? page = null)
         {
             //{ subreddit}/{ sort}/{ window}/{ page}
             string uri = "gallery/r/" + subreddit;
@@ -86,11 +83,10 @@ namespace SharpImgur.APIWrappers
                     }
                 }
             }
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
 
-        public static async Task<List<Image>> GetSubreddditGallery(string subreddit, Sort? sort = null, int? page = null)
+        public static async Task<Response<List<Image>>> GetSubreddditGallery(string subreddit, Sort? sort = null, int? page = null)
         {
             //{ subreddit}/{ sort}/{ window}/{ page}
             string uri = "gallery/r/" + subreddit;
@@ -102,23 +98,19 @@ namespace SharpImgur.APIWrappers
                     uri += "/" + page;
                 }
             }
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
 
-        public static async Task<List<Comment>> GetComments(string imageId, Sort sort = Sort.Best)
+        public static async Task<Response<List<Comment>>> GetComments(string imageId, Sort sort = Sort.Best)
         {
             //gallery/{id}/comments/{sort}
             string uri = "gallery/" + imageId + "/comments/" + sort.ToString().ToLower();
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            if (response["data"] == null || !(bool)response["success"])
-                return null;
-            return response["data"].ToObject<List<Comment>>();
+            return await NetworkHelper.GetRequest<List<Comment>>(uri);
         }
 
-        public static async Task<List<Image>> SearchGallery(string query, Sort? sort = null, int? page = null )
+        public static async Task<Response<List<Image>>> SearchGallery(string query, Sort? sort = null, int? page = null )
         {
-            //https://api.imgur.com/3/gallery/search/{sort}/{page}
+            //gallery/search/{sort}/{page}
             string uri = "gallery/search";
             if (sort != null)
             {
@@ -129,8 +121,7 @@ namespace SharpImgur.APIWrappers
                 }
             }
             uri = $"{uri}?q={query}";
-            JObject response = await NetworkHelper.ExecuteRequest(uri);
-            return response["data"].ToObject<List<Image>>();
+            return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
             
         public static async Task Vote(string id, string vote)

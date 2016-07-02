@@ -25,7 +25,7 @@ namespace SharpImgur.APIWrappers
             JObject result = await NetworkHelper.ExecutePostRequest(uri, payload);
         }
 
-        public static async Task<byte[]> ReadFile(StorageFile file)
+        private static async Task<byte[]> ReadFile(StorageFile file)
         {
             byte[] fileBytes = null;
             using (IRandomAccessStreamWithContentType stream = await file.OpenReadAsync())
@@ -38,6 +38,15 @@ namespace SharpImgur.APIWrappers
                 }
             }
             return fileBytes;
+        }
+
+        public static async Task UpdateImage(string id, string title, string description)
+        {
+            string uri = $"image/{id}";
+            JObject payload = new JObject();
+            payload["title"] = title;
+            payload["description"] = description;
+            JObject result = await NetworkHelper.ExecutePostRequest(uri, payload);
         }
     }
 }

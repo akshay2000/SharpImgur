@@ -28,30 +28,52 @@ namespace SharpImgur.Helpers
             string finalUrl;
             if (url.StartsWith("http"))
                 finalUrl = url;
-            else {
+            else
+            {
                 finalUrl = isNative ? imgurBaseURI + url : baseURI + url;
             }
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
-            //string response = "{}";
-            //try
-            //{
-                var r = await httpClient.GetAsync(new Uri(finalUrl));
-                string response = await r.Content.ReadAsStringAsync();
-            //}
-            //catch
-            //{
-                //Debug.WriteLine("Netwrok Error!");
-            //}
+            var r = await httpClient.GetAsync(new Uri(finalUrl));
+            string response = await r.Content.ReadAsStringAsync();
             JObject responseJson = JObject.Parse(response);
             return responseJson;
         }
 
-        public static async Task<Response<T>> GetRequest<T>(string url, bool isNative = false) where T:new()
+        public static async Task<Response<T>> GetRequest<T>(string url, bool isNative = false) where T : new()
         {
             Response<T> response = new Response<T>();
             try
             {
                 JObject o = await ExecuteRequest(url, isNative);
+                if ((bool)o["success"])
+                    response.Content = o["data"].ToObject<T>();
+                else
+                {
+                    response.IsError = true;
+                    response.Message = o["data"]["error"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.Error = ex;
+            }
+            return response;
+        }
+
+        public static async Task<Response<T>> DeleteRequest<T>(string relativeUri, bool isNative = false) where T : new()
+        {
+#if DEBUG
+            isNative = true;
+#endif
+            string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
+            HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
+            Response<T> response = new Response<T>();
+            try
+            {
+                var r = await httpClient.DeleteAsync(new Uri(uri));
+                string res = await r.Content.ReadAsStringAsync();
+                JObject o = JObject.Parse(res);
                 if ((bool)o["success"])
                     response.Content = o["data"].ToObject<T>();
                 else

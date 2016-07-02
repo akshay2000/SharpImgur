@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using SharpImgur.Helpers;
+using SharpImgur.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,12 @@ namespace SharpImgur.APIWrappers
             payload["title"] = title;
             payload["description"] = description;
             JObject result = await NetworkHelper.ExecutePostRequest(uri, payload);
+        }
+
+        public static async Task<Response<bool>> DeleteImage(string id)
+        {
+            string uri = $"image/{id}";
+            return await NetworkHelper.DeleteRequest<bool>(uri);
         }
     }
 }

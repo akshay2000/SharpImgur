@@ -27,5 +27,11 @@ namespace SharpImgur.APIWrappers
             JObject response = await NetworkHelper.ExecuteRequest(uriString);
             return response["data"].ToObject<List<Image>>();
         }
+
+        public static async Task<Response<bool>> DeleteAlbum(string id)
+        {
+            string uri = $"album/{id}";
+            return await NetworkHelper.DeleteRequest<bool>(uri);
+        }
     }
 }

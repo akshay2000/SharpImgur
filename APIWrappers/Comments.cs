@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using SharpImgur.Helpers;
+using SharpImgur.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,13 @@ namespace SharpImgur.APIWrappers
 {
     public static class Comments
     {
-        public static async Task Vote(long commentId, string vote)
+        public static async Task<Response<bool>> Vote(long commentId, string vote)
         {
             string url = $"comment/{commentId}/vote/{vote}";
-            var result = await NetworkHelper.ExecutePostRequest(url, new JObject());
-            return;
+            return await NetworkHelper.PostRequest<bool>(url, new JObject());
         }
 
-        public static async Task<long?> CreateComment(string comment, string imageId, string parentId = null)
+        public static async Task<Response<long?>> CreateComment(string comment, string imageId, string parentId = null)
         {
             JObject payload = new JObject();
             payload["image_id"] = imageId;
@@ -25,11 +25,7 @@ namespace SharpImgur.APIWrappers
             if (parentId != null)
                 payload["parent_id"] = parentId;
             string url = "comment";
-            var result = await NetworkHelper.ExecutePostRequest(url, payload);
-            if (result.HasValues && (bool)result["success"])
-                return (long)result["data"]["id"];
-            else
-                return null;
+            return await NetworkHelper.PostRequest<long?>(url, payload);
         }
     }
 }

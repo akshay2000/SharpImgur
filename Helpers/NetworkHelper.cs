@@ -90,7 +90,29 @@ namespace SharpImgur.Helpers
             return response;
         }
 
-        public static async Task<JObject> ExecutePostRequest(string relativeUri, JObject payload, bool isNative = false)
+        public static async Task<Response<T>> PostRequest<T>(string url, JObject payload, bool isNative = false) where T : new()
+        {
+            Response<T> response = new Response<T>();
+            try
+            {
+                JObject o = await ExecutePostRequest(url, payload, isNative);
+                if ((bool)o["success"])
+                    response.Content = o["data"].ToObject<T>();
+                else
+                {
+                    response.IsError = true;
+                    response.Message = o["data"]["error"].ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.Error = ex;
+            }
+            return response;
+        }
+
+        private static async Task<JObject> ExecutePostRequest(string relativeUri, JObject payload, bool isNative = false)
         {
             string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
             return await ExecutePostRequest(new Uri(uri), payload, isNative);

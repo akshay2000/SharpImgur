@@ -34,7 +34,7 @@ namespace SharpImgur.APIWrappers
             return await NetworkHelper.DeleteRequest<bool>(uri);
         }
 
-        public static async Task<bool> UpdateAlbum(string id, string[] ids = null, string title = null, string description = null, string privacy = null, string cover = null)
+        public static async Task<Response<bool>> UpdateAlbum(string id, string[] ids = null, string title = null, string description = null, string privacy = null, string cover = null)
         {
             string uri = $"album/{id}";
             JObject payload = new JObject();
@@ -43,11 +43,7 @@ namespace SharpImgur.APIWrappers
             if (description != null) payload["description"] = description;
             if (privacy != null) payload["privacy"] = privacy;
             if (cover != null) payload[cover] = cover;
-            JObject response = await NetworkHelper.ExecutePostRequest(uri, payload);
-            if (response.HasValues)
-                return response["data"].ToObject<bool>();
-            else
-                return false;
+            return await NetworkHelper.PostRequest<bool>(uri, payload);
         }
     }
 }

@@ -124,28 +124,24 @@ namespace SharpImgur.APIWrappers
             return await NetworkHelper.GetRequest<List<Image>>(uri);
         }
             
-        public static async Task Vote(string id, string vote)
+        public static async Task<Response<bool>> Vote(string id, string vote)
         {
             string urlString = $"gallery/{id}/vote/{vote}";
-            var result = await NetworkHelper.ExecutePostRequest(urlString, new JObject());
-            return;
+            return await NetworkHelper.PostRequest<bool>(urlString, new JObject());
         }
 
-        private static async Task<bool> Favourite(string id, string type)
+        private static async Task<Response<bool>> Favourite(string id, string type)
         {
             string urlString = $"{type}/{id}/favorite";
-            var result = await NetworkHelper.ExecutePostRequest(urlString, new JObject());
-            if (result.HasValues && (bool)result["success"])
-                return (string)result["data"] == "favorited";
-            return false;
+            return await NetworkHelper.PostRequest<bool>(urlString, new JObject());
         }
 
-        public static async Task<bool> FavouriteImage(string id)
+        public static async Task<Response<bool>> FavouriteImage(string id)
         {
             return await Favourite(id, "image");
         }
 
-        public static async Task<bool> FavouriteAlbum(string id)
+        public static async Task<Response<bool>> FavouriteAlbum(string id)
         {
             return await Favourite(id, "album");
         }

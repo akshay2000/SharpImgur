@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Web.Http;
 
@@ -25,15 +26,9 @@ namespace SharpImgur.Helpers
 #if DEBUG
             isNative = true;
 #endif
-            string finalUrl;
-            if (url.StartsWith("http"))
-                finalUrl = url;
-            else
-            {
-                finalUrl = isNative ? imgurBaseURI + url : baseURI + url;
-            }
+            Uri finalUrl = BuildUri(url, isNative);
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
-            var r = await httpClient.GetAsync(new Uri(finalUrl));
+            var r = await httpClient.GetAsync(finalUrl);
             string response = await r.Content.ReadAsStringAsync();
             JObject responseJson = JObject.Parse(response);
             return responseJson;
@@ -66,12 +61,12 @@ namespace SharpImgur.Helpers
 #if DEBUG
             isNative = true;
 #endif
-            string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
+            Uri uri = BuildUri(relativeUri, isNative);
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
             Response<T> response = new Response<T>();
             try
             {
-                var r = await httpClient.DeleteAsync(new Uri(uri));
+                var r = await httpClient.DeleteAsync(uri);
                 string res = await r.Content.ReadAsStringAsync();
                 JObject o = JObject.Parse(res);
                 if ((bool)o["success"])
@@ -90,12 +85,12 @@ namespace SharpImgur.Helpers
             return response;
         }
 
-        public static async Task<Response<T>> PostRequest<T>(string url, JObject payload, bool isNative = false) where T : new()
+        public static async Task<Response<T>> PostRequest<T>(string url, JObject payload, CancellationToken ct, IProgress<HttpProgress> progress, bool isNative = false) where T : new()
         {
             Response<T> response = new Response<T>();
             try
             {
-                JObject o = await ExecutePostRequest(url, payload, isNative);
+                JObject o = await ExecutePostRequest(url, payload, isNative, ct, progress);
                 if ((bool)o["success"])
                     response.Content = o["data"].ToObject<T>();
                 else
@@ -112,28 +107,31 @@ namespace SharpImgur.Helpers
             return response;
         }
 
-        private static async Task<JObject> ExecutePostRequest(string relativeUri, JObject payload, bool isNative = false)
+        public static async Task<Response<T>> PostRequest<T>(string url, JObject payload, bool isNative = false) where T : new()
         {
-            string uri = isNative ? imgurBaseURI + relativeUri : baseURI + relativeUri;
-            return await ExecutePostRequest(new Uri(uri), payload, isNative);
+            return await PostRequest<T>(url, payload, CancellationToken.None, null, isNative);
         }
-
-        public static async Task<JObject> ExecutePostRequest(Uri uri, JObject payload, bool isNative = false)
+        
+        public static async Task<JObject> ExecutePostRequest(string url, JObject payload, bool isNative, CancellationToken ct = default(CancellationToken), IProgress<HttpProgress> progress = null)
         {
+            Uri uri = BuildUri(url, isNative);
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
             string response = "{}";
-            try
-            {
-                IHttpContent content = new HttpStringContent(payload.ToString(), Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
-                var r = await httpClient.PostAsync(uri, content);
-                response = await r.Content.ReadAsStringAsync();
-            }
-            catch
-            {
-                Debug.WriteLine("Netwrok Error!");
-            }
+            IHttpContent content = new HttpStringContent(payload.ToString(), Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
+            var r = await httpClient.PostAsync(uri, content).AsTask(ct, progress);
+            response = await r.Content.ReadAsStringAsync();
             JObject responseJson = JObject.Parse(response);
             return responseJson;
+        }
+
+        private static Uri BuildUri(string url, bool isNative)
+        {
+            string finalUrl;
+            if (url.StartsWith("http"))
+                finalUrl = url;
+            else
+                finalUrl = isNative ? imgurBaseURI + url : baseURI + url;
+            return new Uri(finalUrl);
         }
 
         internal static void FlushHttpClients()

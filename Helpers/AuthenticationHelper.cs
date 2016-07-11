@@ -93,7 +93,7 @@ namespace SharpImgur.Helpers
         public static async Task<string> RefreshAccessToken(string refreshToken)
         {
             SettingsHelper.SetLocalValue(isAuthIntendedKey, false);
-            Uri uri = new Uri("https://api.imgur.com/oauth2/token");
+            const string url = "https://api.imgur.com/oauth2/token";
             var config = await SecretsHelper.GetConfiguration();
             string clientId = (string)config["Client_Id"];
             string clientSecret = (string)config["Client_Secret"];
@@ -103,7 +103,7 @@ namespace SharpImgur.Helpers
             payload["client_secret"] = clientSecret;
             payload["grant_type"] = "refresh_token";
 
-            JObject result = await NetworkHelper.ExecutePostRequest(uri, payload);
+            JObject result = await NetworkHelper.ExecutePostRequest(url, payload, false);
             SettingsHelper.SetLocalValue(isAuthIntendedKey, true);
             Dictionary<string, string> ret = new Dictionary<string, string>();
             ret[userNameKey] = (string)result["account_username"];

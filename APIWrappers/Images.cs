@@ -5,15 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.Web.Http;
 
 namespace SharpImgur.APIWrappers
 {
     public static class Images
     {
-        public static async Task<Response<Image>> UploadImage(StorageFile file, string albumId = null, string type = null, string title = null, string description = null)
+        public static async Task<Response<Image>> UploadImage(StorageFile file, CancellationToken ct, IProgress<HttpProgress> progress, string title = null, string description = null, string albumId = null, string type = null)
         {
             string base64image = Convert.ToBase64String(await ReadFile(file));
             JObject payload = new JObject();
@@ -23,7 +25,7 @@ namespace SharpImgur.APIWrappers
             if (title != null) payload["title"] = title;
             if (description != null) payload["description"] = description;
             string uri = "upload";
-            return await NetworkHelper.PostRequest<Image>(uri, payload);
+            return await NetworkHelper.PostRequest<Image>(uri, payload, ct, progress);
         }
 
         private static async Task<byte[]> ReadFile(StorageFile file)

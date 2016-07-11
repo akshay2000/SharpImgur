@@ -25,7 +25,9 @@ namespace SharpImgur.APIWrappers
             if (parentId != null)
                 payload["parent_id"] = parentId;
             string url = "comment";
-            return await NetworkHelper.PostRequest<long?>(url, payload);
+            var response = await NetworkHelper.PostRequest<dynamic>(url, payload);
+            Response<long?> ret = new Response<long?> { Content = (long?)((JObject)response.Content)["id"], Error = response.Error, IsError = response.IsError, Message = response.Message };
+            return ret;
         }
     }
 }

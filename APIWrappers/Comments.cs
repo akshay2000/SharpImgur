@@ -17,7 +17,7 @@ namespace SharpImgur.APIWrappers
             return await NetworkHelper.PostRequest<bool>(url, new JObject());
         }
 
-        public static async Task<Response<long?>> CreateComment(string comment, string imageId, string parentId = null)
+        public static async Task<Response<long?>> CreateComment(string comment, string imageId, long? parentId = null)
         {
             JObject payload = new JObject();
             payload["image_id"] = imageId;

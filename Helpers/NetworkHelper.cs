@@ -114,6 +114,9 @@ namespace SharpImgur.Helpers
         
         public static async Task<JObject> ExecutePostRequest(string url, JObject payload, bool isNative, CancellationToken ct = default(CancellationToken), IProgress<HttpProgress> progress = null)
         {
+#if DEBUG
+            isNative = true;
+#endif
             Uri uri = BuildUri(url, isNative);
             HttpClient httpClient = AuthenticationHelper.IsAuthIntended() ? await GetAuthClient() : await GetClient();
             string response = "{}";
